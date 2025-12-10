@@ -1,0 +1,7 @@
+flask
+soundfile
+coqui-tts
+fastapi
+uvicorn
+torch
+numpy
