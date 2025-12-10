@@ -1,7 +1,5 @@
-flask
-soundfile
-coqui-tts
 fastapi
 uvicorn
-torch
+coqui-tts
 numpy
+soundfile
