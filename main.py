@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from pathlib import Path
 import uuid
 import subprocess
 
@@ -9,9 +10,12 @@ app = FastAPI()
 def home():
     return {"status": "Coqui TTS API Active 🚀"}
 
-@app.post("/tts")
-def tts(text: str, voice: str="tts_models/en/ljspeech/tacotron2-DDC"):
-    filename = f"{uuid.uuid4()}.wav"
-    cmd = f'tts --text "{text}" --model_name "{voice}" --out_path {filename}'
-    subprocess.run(cmd, shell=True)
-    return FileResponse(filename, media_type="audio/wav", filename=filename)
+@app.get("/tts")
+def tts(text: str):
+    file_name = f"audio_{uuid.uuid4()}.wav"
+    output_path = Path(file_name)
+
+    command = f'tts --text "{text}" --out_path "{output_path}"'
+    subprocess.call(command, shell=True)
+
+    return FileResponse(output_path, media_type="audio/wav", filename=file_name)
